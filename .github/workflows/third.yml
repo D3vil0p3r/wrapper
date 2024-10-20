@@ -35,8 +35,8 @@ jobs:
       # Configure Git
       - name: Configure Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "expandpi"
+          git config --global user.email "expandpi@users.noreply.github.com"
 
       # Commit the changes
       - name: Commit changes
