@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
+      # Checkout the repository and ensure it's on the main branch
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: main  # Replace 'main' with the actual branch name you want to use
 
       # Remove the README.md file
       - name: Remove README.md
@@ -44,5 +46,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
         run: |
-          git push
-
+          git push origin main
