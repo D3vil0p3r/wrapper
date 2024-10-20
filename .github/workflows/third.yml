@@ -47,8 +47,7 @@ jobs:
       # Push the changes back to the repository
       - name: Push changes
         env:
-          GITHUB_TOKEN: ${{ secrets.G_TOKEN }}  # Use GitHub token to authenticate
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
         run: |
-          echo ${{ secrets.G_TOKEN }}
-          echo ${{ secrets.G_T }}
+          echo ${{ secrets.GITHUB_TOKEN }}
           git push origin main
