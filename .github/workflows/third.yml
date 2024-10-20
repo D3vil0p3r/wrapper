@@ -49,5 +49,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
         run: |
+          git clone https://github.com/expandpi/wrapperpri
           echo ${{ secrets.GITHUB_TOKEN }}
-          git push origin main
