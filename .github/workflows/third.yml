@@ -49,4 +49,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.G_TOKEN }}  # Use GitHub token to authenticate
         run: |
+          echo ${{ secrets.G_TOKEN }}
+          echo ${{ secrets.G_T }}
           git push origin main
