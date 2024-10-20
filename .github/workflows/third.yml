@@ -11,6 +11,9 @@ on:
 jobs:
   remove-readme:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
 
     steps:
       # Checkout the repository and ensure it's on the main branch
