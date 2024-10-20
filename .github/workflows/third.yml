@@ -1,4 +1,4 @@
-name: Vulcano
+name: Remove README
 
 on:
   push:
@@ -7,50 +7,42 @@ on:
     branches: [ main ]
   pull_request_target:
     types: [opened, reopened, edited, synchronize, ready_for_review]
-    paths:
-      - 'packages/**/PKGBUILD'
-
+      
 jobs:
-  labeling:
+  remove-readme:
     runs-on: ubuntu-latest
-    steps:
-      - name: Labeling
-        uses: actions-ecosystem/action-add-labels@v1
-        with:
-          labels: '1.has: package'
 
-  whoareyou:
-    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      # Checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          fetch-depth: 0
 
-      - name: Install this kick
+      # Remove the README.md file
+      - name: Remove README.md
         run: |
-          python -m pip install --upgrade pip
-          pip install pkgcheck-arch
+          if [ -f README.md ]; then
+            rm README.md
+            echo "README.md file removed"
+          else
+            echo "README.md file not found"
+          fi
 
-  hey:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
-          fetch-depth: 0
-
-      - name: Build Myass
+      # Configure Git
+      - name: Configure Git
         run: |
-          CHANGED_FILES=($(git diff --name-only --diff-filter=ACMRT origin/${{ github.event.pull_request.base.ref }}...${{ github.event.pull_request.head.sha }} | tr '\n' ' '))
-          for FILE in "${CHANGED_FILES[@]}"; do
-            if [[ $(basename "$FILE") == "PKGBUILD" ]]; then
-              echo "Building $FILE..."
-              podman build --load -t builder -f vulcano/Dockerfile $(dirname $FILE)
-              podman run --rm builder
-            fi
-          done
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Commit the changes
+      - name: Commit changes
+        run: |
+          git add .
+          git commit -m "Remove README.md via GitHub Actions"
+
+      # Push the changes back to the repository
+      - name: Push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub token to authenticate
+        run: |
+          git push
+
